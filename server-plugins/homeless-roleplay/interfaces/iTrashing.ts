@@ -5,6 +5,7 @@ import { Item } from '../../../shared/interfaces/item';
 export interface ITrashing {
     trashName: string;
 
+
     outcome?: {
         common: Array<string>;
         uncommon?: Array<string>;

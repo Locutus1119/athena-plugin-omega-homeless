@@ -14,37 +14,59 @@ export class TrashingController {
 
     static Trash() {
 
-        alt.onClient('HomelessRolePlay:Server:Trashing', async (player: alt.Player) => {
-            InteractionController.add({
-                    uid: `IC-${player.pos.x}`,    
-                    position: { x: player.pos.x, y: player.pos.y, z: player.pos.z },
-                    description: 'Kukázás',
-                    range: HomelessRP.interactionRange,
-                    debug: true,
-                    callback: TrashingController.startTrashing,
-            })
-        })}
+        alt.onClient('HomelessRolePlay:Server:Trashing', TrashingController.startTrashingEvent,)
+            }
+         
         
+
+
+/**
+     * @param player - alt.Player - The player who used the item.
+    * @param {alt.Vector3} spot Position of the blip
+     * @returns None
+     */
+   
+     private static async startTrashingEvent(player: alt.Player,) {
+        for (const trash of trashRegistry) {
+            const trashpos =  player.pos; 
+            TrashingController.startTrashing(player, trash, trashpos,);
+           
+        }
+    
+    }
+
 
 
      /**
      * @param player - player is trashing.
      * @param {ITrashing} trashingData - ....
+     * @param antiMacro - The position of the farming spot.
      * @returns The outcome the trashing.
      */
 
 
      
-    static async startTrashing( player: alt.Player, trashingData: ITrashing,)  {
+    private static async startTrashing( player: alt.Player, trashingData: ITrashing, antiMacro: alt.Vector3,)  {
 
         if (player.getMeta(`IsTrashing`) === true) {
             return;
         }
+        if (player.getMeta(`Spotused-${antiMacro.x}`) === antiMacro.x) {
+            playerFuncs.emit.notification(player, `[ANTIMACRO] - Already used this spot before.`);
+            return;
+        }
+        player.setMeta(`Spotused-${antiMacro.x}`, antiMacro.x);
         player.setMeta(`IsTrashing`, true);
         playerFuncs.safe.setPosition(player, player.pos.x, player.pos.y, player.pos.z);
+        playerFuncs.set.frozen(player, true);
+        alt.log('FREEZE');
 
+        alt.setTimeout(() => {
+            player.deleteMeta(`Spotused-${antiMacro.x}`);
+        }, TrashingController.getRandomInt(HomelessRP.trashMinRespawnTime, HomelessRP.trashMaxRespawnTime));
 
         const trashDuration = TrashingController.getRandomInt(HomelessRP.minTrashDuration, HomelessRP.maxTrashDuration);
+
 
         playerFuncs.emit.animation(
             player,
@@ -119,6 +141,7 @@ export class TrashingController {
             playerFuncs.save.field(player, 'inventory', player.data.inventory);
             playerFuncs.sync.inventory(player);
             player.deleteMeta(`IsTrashing`);
+            playerFuncs.set.frozen(player, false);
         }, trashDuration);
     };
 

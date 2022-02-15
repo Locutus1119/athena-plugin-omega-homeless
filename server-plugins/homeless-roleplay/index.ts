@@ -14,7 +14,8 @@ export const HomelessRP = {
     interactionRange: 0.5,
     minTrashDuration: 3000, 
     maxTrashDuration: 8000,
-    trashRespawnTime: 10000, 
+    trashMinRespawnTime: 10000,
+    trashMaxRespawnTime: 60000, 
 }
 
 PluginSystem.registerPlugin(HomelessRP.name, () => {
