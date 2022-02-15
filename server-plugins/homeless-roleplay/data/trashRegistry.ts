@@ -3,22 +3,8 @@ import { ANIMATION_FLAGS } from '../../../shared/flags/animationFlags';
 import { ITrashing } from '../interfaces/iTrashing';
 
 export const trashRegistry: Array<ITrashing> = [
-    // MINING ROUTE
     {
         trashName: 'BaseTrashing',
-        trashDuration: 10000,
-
-        progressBar: {
-            color: {
-                r: 255,
-                g: 0,
-                b: 0,
-                a: 255,
-            },
-            distance: 15,
-            text: 'Kukázás...',
-        },
-
 
         outcome: {
             uncommon: ['Trash-1', 'Trash-2'],

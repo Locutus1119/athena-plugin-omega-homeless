@@ -22,5 +22,5 @@ PluginSystem.registerPlugin(HomelessRP.name, () => {
 });
 
 alt.on(SYSTEM_EVENTS.BOOTUP_ENABLE_ENTRY, () => {
-    TrashingController.buildTrash();
+    TrashingController.Trash();
 });

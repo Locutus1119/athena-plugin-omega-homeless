@@ -6,14 +6,13 @@ import { ANIMATION_FLAGS } from '../../../shared/flags/animationFlags';
 import { playerFuncs } from '../../../server/extensions/extPlayer';
 import { ITrashing } from '../interfaces/iTrashing';
 import {trashRegistry} from '../data/trashRegistry';
-//import outcome from '../data/outcome';
 import '../data/trashingItems';
 
 
 
 export class TrashingController {
 
-    static buildTrash() {
+    static Trash() {
 
         alt.onClient('HomelessRolePlay:Server:Trashing', async (player: alt.Player) => {
             InteractionController.add({
@@ -29,12 +28,9 @@ export class TrashingController {
 
 
      /**
-     * This function handles the farming of a specific item.
-     * @param player - The player who is farming.
-     * @param {ITrashing} trashingData - nem tudom.
-     * @param {number} itemSlot - The slot of the item in the inventory.
-     * @param antiMacro - The position of the trashing spot.
-     * @returns The outcome of the farming.
+     * @param player - player is trashing.
+     * @param {ITrashing} trashingData - ....
+     * @returns The outcome the trashing.
      */
 
 
@@ -72,7 +68,6 @@ export class TrashingController {
         alt.setTimeout(async () => {
             let outcomeList = [];
 
-            // If tool is not required or we dont have one, we just return the common list.
             if (!randomRarity || randomRarity === 1 || randomRarity < 5) {
                 outcomeList.push(trashingData.outcome.common);
             }
@@ -102,7 +97,7 @@ export class TrashingController {
             }
 
             if (!outcomeList || outcomeList.length === 0) {
-                playerFuncs.emit.notification(player, `You found nothing!`);
+                playerFuncs.emit.notification(player, `Nem találtál semmit!`);
                 return;
             }
 
@@ -113,10 +108,10 @@ export class TrashingController {
 
             if (!hasItem) {
                 playerFuncs.inventory.inventoryAdd(player, itemToAdd, emptySlot.slot);
-                playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
+                playerFuncs.emit.notification(player, `Találtál ${itemToAdd.name}!`);
             } else {
                 player.data.inventory[hasItem.index].quantity += 1;
-                playerFuncs.emit.notification(player, `You've found ${itemToAdd.name}!`);
+                playerFuncs.emit.notification(player, `Találtál ${itemToAdd.name}!`);
             }
 
             
