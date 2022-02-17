@@ -1,6 +1,5 @@
 import * as alt from 'alt-server';
 import { HomelessRP } from '../index';
-import { InteractionController } from '../../../server/systems/interaction';
 import { ItemFactory } from '../../../server/systems/item';
 import { ANIMATION_FLAGS } from '../../../shared/flags/animationFlags';
 import { playerFuncs } from '../../../server/extensions/extPlayer';
@@ -13,6 +12,7 @@ import '../data/trashingItems';
 export class TrashingController {
 
     static Trash() {
+           
 
         alt.onClient('HomelessRolePlay:Server:Trashing', TrashingController.startTrashingEvent,)
             }
@@ -22,17 +22,17 @@ export class TrashingController {
 
 /**
      * @param player - alt.Player - The player who used the item.
-    * @param {alt.Vector3} spot Position of the blip
+     * @param {alt.Vector3} coords Position of the trash
      * @returns None
      */
    
-     private static async startTrashingEvent(player: alt.Player,) {
+     private static async startTrashingEvent(player: alt.Player, coords: alt.Vector3) {
+
         for (const trash of trashRegistry) {
-            const trashpos =  player.pos; 
+            const trashpos =  coords; 
             TrashingController.startTrashing(player, trash, trashpos,);
-           
+
         }
-    
     }
 
 
@@ -40,7 +40,7 @@ export class TrashingController {
      /**
      * @param player - player is trashing.
      * @param {ITrashing} trashingData - ....
-     * @param antiMacro - The position of the farming spot.
+     * @param antiMacro - The position of the trashing spot.
      * @returns The outcome the trashing.
      */
 
@@ -51,20 +51,23 @@ export class TrashingController {
         if (player.getMeta(`IsTrashing`) === true) {
             return;
         }
-        if (player.getMeta(`Spotused-${antiMacro.x}`) === antiMacro.x) {
-            playerFuncs.emit.notification(player, `[ANTIMACRO] - Already used this spot before.`);
+        if (player.getMeta(`trashused-${antiMacro.x}`) === antiMacro.x ) {
+            playerFuncs.emit.notification(player, `[ANTIMACRO] - Ezt a kukát már megnézted, nem került még bele semmi új.`);
             return;
         }
-        player.setMeta(`Spotused-${antiMacro.x}`, antiMacro.x);
+        player.setMeta(`trashused-${antiMacro.x}`, antiMacro.x);
+
         player.setMeta(`IsTrashing`, true);
+
         playerFuncs.safe.setPosition(player, player.pos.x, player.pos.y, player.pos.z);
         playerFuncs.set.frozen(player, true);
         alt.log('FREEZE');
 
-        alt.setTimeout(() => {
-            player.deleteMeta(`Spotused-${antiMacro.x}`);
-        }, TrashingController.getRandomInt(HomelessRP.trashMinRespawnTime, HomelessRP.trashMaxRespawnTime));
 
+        alt.setTimeout(() => {
+            player.deleteMeta(`trashused-${antiMacro.x}`);
+        }, TrashingController.getRandomInt(HomelessRP.trashMinRespawnTime, HomelessRP.trashMaxRespawnTime));
+     
         const trashDuration = TrashingController.getRandomInt(HomelessRP.minTrashDuration, HomelessRP.maxTrashDuration);
 
 
@@ -120,6 +123,7 @@ export class TrashingController {
 
             if (!outcomeList || outcomeList.length === 0) {
                 playerFuncs.emit.notification(player, `Nem találtál semmit!`);
+                playerFuncs.set.frozen(player, false);
                 return;
             }
 

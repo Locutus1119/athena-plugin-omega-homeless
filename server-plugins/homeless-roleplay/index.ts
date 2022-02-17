@@ -10,12 +10,11 @@ import './data/trashingItems';
 
 export const HomelessRP = {
     name: 'HomelessRP',
-    version: 'v0.1',
-    interactionRange: 0.5,
+    version: 'v0.5',
     minTrashDuration: 3000, 
     maxTrashDuration: 8000,
-    trashMinRespawnTime: 10000,
-    trashMaxRespawnTime: 60000, 
+    trashMinRespawnTime: 300000,
+    trashMaxRespawnTime: 1800000, 
 }
 
 PluginSystem.registerPlugin(HomelessRP.name, () => {

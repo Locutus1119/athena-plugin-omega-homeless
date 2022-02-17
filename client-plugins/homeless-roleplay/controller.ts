@@ -13,7 +13,7 @@ alt.on('keydown', (key) => {
     if (key === trashingsettings.keys.trashingInterface) {
         for (let i in trash) {
             let type = trash[i];
-            let obj = native.getClosestObjectOfType(alt.Player.local.pos.x, alt.Player.local.pos.y, alt.Player.local.pos.z, 2.0, alt.hash(type), false, false, false);
+            let obj = native.getClosestObjectOfType(alt.Player.local.pos.x, alt.Player.local.pos.y, alt.Player.local.pos.z, 1.0, alt.hash(type), false, false, false);
             if (obj) {
                 curObj = obj;
                 curType = type;
