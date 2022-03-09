@@ -1,5 +1,6 @@
 import * as alt from 'alt-server';
 import { HomelessRP } from '../index';
+import { OHRP_TRANSLATIONS } from '../index';
 import { ItemFactory } from '../../../server/systems/item';
 import { ANIMATION_FLAGS } from '../../../shared/flags/animationFlags';
 import { playerFuncs } from '../../../server/extensions/extPlayer';
@@ -10,16 +11,10 @@ import '../data/trashingItems';
 
 
 export class TrashingController {
-
     static Trash() {
-           
-
         alt.onClient('HomelessRolePlay:Server:Trashing', TrashingController.startTrashingEvent,)
             }
          
-        
-
-
 /**
      * @param player - alt.Player - The player who used the item.
      * @param {alt.Vector3} coords Position of the trash
@@ -27,15 +22,11 @@ export class TrashingController {
      */
    
      private static async startTrashingEvent(player: alt.Player, coords: alt.Vector3) {
-
         for (const trash of trashRegistry) {
             const trashpos =  coords; 
             TrashingController.startTrashing(player, trash, trashpos,);
-
         }
     }
-
-
 
      /**
      * @param player - player is trashing.
@@ -44,25 +35,20 @@ export class TrashingController {
      * @returns The outcome the trashing.
      */
 
-
-     
     private static async startTrashing( player: alt.Player, trashingData: ITrashing, antiMacro: alt.Vector3,)  {
 
         if (player.getMeta(`IsTrashing`) === true) {
             return;
         }
         if (player.getMeta(`trashused-${antiMacro.x}`) === antiMacro.x ) {
-            playerFuncs.emit.notification(player, `[ANTIMACRO] - Ezt a kukát már megnézted, nem került még bele semmi új.`);
+            playerFuncs.emit.notification(player, OHRP_TRANSLATIONS.antiMacro);
             return;
         }
         player.setMeta(`trashused-${antiMacro.x}`, antiMacro.x);
-
         player.setMeta(`IsTrashing`, true);
-
         playerFuncs.safe.setPosition(player, player.pos.x, player.pos.y, player.pos.z);
         playerFuncs.set.frozen(player, true);
         alt.log('FREEZE');
-
 
         alt.setTimeout(() => {
             player.deleteMeta(`trashused-${antiMacro.x}`);
@@ -70,11 +56,10 @@ export class TrashingController {
      
         const trashDuration = TrashingController.getRandomInt(HomelessRP.minTrashDuration, HomelessRP.maxTrashDuration);
 
-
         playerFuncs.emit.animation(
             player,
-            'amb@world_human_const_drill@male@drill@base',
-        'base',
+            'anim@amb@business@cfm@cfm_machine_oversee@',
+        'button_press_operator',
         ANIMATION_FLAGS.NORMAL | ANIMATION_FLAGS.REPEAT,
             trashDuration,
         );
@@ -85,7 +70,7 @@ export class TrashingController {
                 distance: 15,
                 milliseconds: trashDuration,
                 position: player.pos,
-                text: 'Kukázás...',
+                text: OHRP_TRANSLATIONS.progressBar,
             });
 
         const randomRarity = TrashingController.getRandomInt(0, 70);
@@ -122,7 +107,7 @@ export class TrashingController {
             }
 
             if (!outcomeList || outcomeList.length === 0) {
-                playerFuncs.emit.notification(player, `Nem találtál semmit!`);
+                playerFuncs.emit.notification(player, OHRP_TRANSLATIONS.noLoot);
                 playerFuncs.set.frozen(player, false);
                 return;
             }
@@ -134,10 +119,10 @@ export class TrashingController {
 
             if (!hasItem) {
                 playerFuncs.inventory.inventoryAdd(player, itemToAdd, emptySlot.slot);
-                playerFuncs.emit.notification(player, `Találtál ${itemToAdd.name}!`);
+                playerFuncs.emit.notification(player, `${OHRP_TRANSLATIONS.loot} ${itemToAdd.name}!`);
             } else {
                 player.data.inventory[hasItem.index].quantity += 1;
-                playerFuncs.emit.notification(player, `Találtál ${itemToAdd.name}!`);
+                playerFuncs.emit.notification(player, `${OHRP_TRANSLATIONS.loot} ${itemToAdd.name}!`);
             }
 
             
