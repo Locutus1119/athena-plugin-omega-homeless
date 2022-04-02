@@ -7,6 +7,5 @@ export interface iTrash {
     position: alt.Vector3;
     cooldown: number;
     isLooted: boolean;
-    isStorage: boolean;
-    currentItems: Array<any>
+    currentItems: Array<string | number>
 }

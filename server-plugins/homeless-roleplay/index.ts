@@ -31,15 +31,14 @@ alt.on(SYSTEM_EVENTS.BOOTUP_ENABLE_ENTRY, async () => {
             position: TRASHBINS[x].position,
             cooldown: 0,
             isLooted: false,
-            isStorage: TRASHBINS[x].isStorage,
-            currentItems: await fillTrashContainer([0]),
-        };
+            currentItems: await fillTrashContainer([0])
+        }; 
 
         const trashbinExists = await Database.fetchData<iTrash>('name', TRASHBINS[x].name, HomelessRP.collection);
         if (!trashbinExists) {
             let counter = 0;
             counter++;
-            const newBin = await Database.insertData(trashDoc, HomelessRP.collection, true);
+            await Database.insertData(trashDoc, HomelessRP.collection, false);
             alt.logWarning(`${HomelessRP.name} | Database | Created ${counter} trashbins.`);
         }
     }
@@ -49,26 +48,24 @@ alt.on(SYSTEM_EVENTS.BOOTUP_ENABLE_ENTRY, async () => {
             position: bin.position,
             description: 'Search in trash...',
             callback: (player: alt.Player) => {
-                TrashSystem.searchTrash(player, bin._id.toString(), commonItems[0]);
+                TrashSystem.searchTrash(player, bin._id.toString(), bin.currentItems);
             },
         });
     });
 });
 
-function fillTrashContainer<T>(array: T[]): Promise<Array<T>> {
+async function fillTrashContainer<T>(array: T[]): Promise<Array<T>> {
     let dropChance = Math.random() * 100; // 0.00000 - 100
     let itemInArray = commonItems([0]);
     let filledArray = [];
 
     itemInArray.forEach((item) => {
         if (item.dropChance >= dropChance) {
-            alt.logError('Diced Dropchance => ' + dropChance);
-            alt.logError('Item Drop Chance => ' + item.dropChance);
-            filledArray.push(item);
+            filledArray.push({ name: item.name, quantity: item.quantity, icon: item.icon });
         }
     });
 
-    return Promise.resolve(filledArray);
+    return await Promise.resolve(filledArray);
 }
 
 function getRandomInt(min: number, max: number) {

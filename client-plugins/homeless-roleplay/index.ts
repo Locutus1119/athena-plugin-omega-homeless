@@ -6,7 +6,7 @@ const view = await WebViewController.get();
 
 // You should change this to match your Vue Template's ComponentName.
 const PAGE_NAME = 'trashUI';
-let itemArray: Array<string>; 
+let itemArray: []; 
 let identifier: string;
 
 class InternalFunctions implements ViewModel {
@@ -87,8 +87,9 @@ view.on(`${PAGE_NAME}:Vue:RemoveItem`, (index: number, identifier: string) => {
     alt.emitServer(`${PAGE_NAME}:Server:RemoveItem`, index, identifier);
 });
 
-alt.onServer('HomelessRP:Client:OpenVue', (clientIdentifier: string, trashItems: Array<string>) => {
+alt.onServer('HomelessRP:Client:OpenVue', (trashbinId: string, trashItems: []) => {
     itemArray = trashItems;
-    identifier = clientIdentifier;
+    identifier = trashbinId;
+    console.log(JSON.stringify(trashItems));
     InternalFunctions.open();
 });

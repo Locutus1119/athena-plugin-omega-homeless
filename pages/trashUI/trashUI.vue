@@ -6,9 +6,9 @@
         <div class="content">
             <p>You've found {{ trashItems.length }} Item(s) in the Trashbin.</p>
             <div class="items mt-4" v-for="(trashItem, index) in trashItems" :key="index">
-                <p>{{ trashItems[index].displayName }} ({{ trashItems[index].rarity }})</p>
+                <p>{{ trashItems[index].name.toUpperCase() }}</p>
                 <img
-                    :src="ResolvePath(`../../assets/icons/${trashItems[index].name}.png`)"
+                    :src="ResolvePath(`../../assets/icons/${trashItems[index].icon}.png`)"
                     id="Images"
                     style="width: 64px; height: 64px"
                 />
@@ -17,7 +17,7 @@
                 <Button
                     class="mt-4"
                     color="light-blue"
-                    @click="removeItem(index, binIdentifier)"
+                    @click="removeItem(index)"
                     style="width: 50%; margin-left: 25%; border-radius: 10px"
                 >
                     Take Item
@@ -29,7 +29,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { iTrashItems } from '../../../../src/core/server-plugins/athena-homeless-roleplay/src/interfaces/iTrashItems';
 import Button from '../../components/Button.vue';
 import Frame from '../../components/Frame.vue';
 import Icon from '../../components/Icon.vue';
@@ -89,8 +88,7 @@ export default defineComponent({
     },
     // Used to define functions you can call with 'this.x'
     methods: {
-        setTrash(identifier:string, items: Array<iTrashItems>) {
-            console.log('Items: ' + JSON.stringify(items) + ' / Identifier: ' + identifier);
+        setTrash(identifier: string, items: []) {
             this.trashItems = items;
             this.binIdentifier = identifier;
         },
@@ -99,7 +97,7 @@ export default defineComponent({
         },
         removeItem(index: number, identifier: string) {
             this.trashItems.splice(index, 1);
-            alt.emit(`${ComponentName}:Vue:RemoveItem`, index, identifier);
+            alt.emit(`${ComponentName}:Vue:RemoveItem`, index, this.binIdentifier);
         },
         handleKeyPress(e) {
             // Escape Key
