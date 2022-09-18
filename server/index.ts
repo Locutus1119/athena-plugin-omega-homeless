@@ -9,6 +9,7 @@ import { iTrash } from '../shared/src/interfaces/iTrash';
 import './src/server-events';
 import { TrashSystem } from './src/trash-system';
 import { TRASHBINS } from './src/trashLists/trashBins';
+
 import { commonItems } from './src/trashLists/trashItems';
 
 export const HomelessRP = {
@@ -29,18 +30,21 @@ alt.on(SYSTEM_EVENTS.BOOTUP_ENABLE_ENTRY, async () => {
         const trashDoc: iTrash = {
             _id: uuid.toString(),
             id: x,
+            name: TRASHBINS[x].name,
             position: TRASHBINS[x].position,
+    
             cooldown: TRASHBINS[x].cooldown,
             lastLooted: TRASHBINS[x].lastLooted,
+
             currentItems: await OHRP.fillTrashContainer([0])
         }; 
 
-        const trashbinExists = await Database.fetchAllData<iTrash>(HomelessRP.collection);
+        const trashbinExists = await Database.fetchData<iTrash>('name', TRASHBINS[x].name, HomelessRP.collection);
         if (!trashbinExists) {
             let counter = 0;
             counter++;
             await Database.insertData(trashDoc, HomelessRP.collection, false);
-            alt.logWarning(`${HomelessRP.name} | Database | Created ${counter} trashbins. `);
+            alt.logWarning(`${HomelessRP.name} | Database | Created ${counter} trashbins. ${TRASHBINS[x].name} `);
         }
     }
     const allBins = await Database.fetchAllData<iTrash>(HomelessRP.collection);

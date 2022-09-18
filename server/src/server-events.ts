@@ -31,7 +31,7 @@ alt.onClient(`${PAGE_NAME}:Server:RemoveItem`, async (player: alt.Player, binIte
      trashbin.currentItems = updateItem
      alt.log(`után ${trashbin.currentItems}-`);
      await Database.updateDataByFieldMatch('id', trashbinId, { currentItems: updateItem }, HomelessRP.collection);
-     //await Database.insertData(trashDoc, HomelessRP.collection, false)
+
 
 
 }
