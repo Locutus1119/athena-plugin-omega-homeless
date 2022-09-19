@@ -1,7 +1,12 @@
 import * as alt from 'alt-client';
+import * as native from 'natives';
 import { WebViewController } from '../../../client/extensions/view2';
 import ViewModel from '../../../client/models/viewModel';
 import { isAnyMenuOpen } from '../../../client/utility/menus';
+import './src/controller';
+import { omegaHRP } from '../shared/enums/OHRPenums';
+import { trashingsettings } from '../shared/src/config';
+import { trashProps } from '../shared/src/trashProps';
 const view = await WebViewController.get();
 
 // You should change this to match your Vue Template's ComponentName.

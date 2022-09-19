@@ -4,14 +4,11 @@ export const trashProps = [
     'prop_bin_03a',
     'prop_bin_04a',
     'prop_bin_05a',
-    'prop_bin_05a',
-    'prop_bin_06a',
     'prop_bin_06a',
     'prop_bin_07a',
     'prop_bin_07b',
     'prop_bin_07c',
     'prop_bin_07d',
-    'prop_bin_08a',
     'prop_bin_08a',
     'prop_bin_08open',
     'prop_bin_09a',
@@ -28,6 +25,48 @@ export const trashProps = [
     'prop_bin_delpiero',
     'prop_bin_delpiero_b',
     'prop_binoc_01',
+    'prop_dumpster_01a',
+    'prop_dumpster_02a',
+    'prop_dumpster_02b',
+    'prop_dumpster_4a',
+    'prop_dumpster_4b',
+    'zprop_bin_01a_old',
+
+]
+
+export const trashPropsA = [
+    'prop_bin_01a',
+    'prop_bin_02a',
+    'prop_bin_03a',
+    'prop_bin_04a',
+    'prop_bin_05a',
+    'prop_bin_06a',
+    'prop_bin_07a',
+    'prop_bin_07b',
+    'prop_bin_07c',
+    'prop_bin_07d',
+    'prop_bin_08a',
+    'prop_bin_08open',
+    'prop_bin_09a',
+    'prop_bin_10a',
+    'prop_bin_10b',
+    'prop_bin_11a',
+    'prop_bin_11b',
+    'prop_bin_12a',
+    'prop_bin_13a',
+    'prop_bin_14a',
+    'prop_bin_14b',
+    'prop_bin_beach_01a',
+    'prop_bin_beach_01d',
+    'prop_bin_delpiero',
+    'prop_bin_delpiero_b',
+    'prop_binoc_01',
+   
+
+]
+
+export const trashPropsB = [
+
     'prop_dumpster_01a',
     'prop_dumpster_02a',
     'prop_dumpster_02b',
